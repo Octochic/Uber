@@ -29,12 +29,16 @@ const userSchema = new mongoose.Schema({
     //to tract the location of captain we use soacketid
     socketID:{
         type: String,
-    }
+    },
 })
 
 userSchema.methods.generateAuthToken = function(){
+    const expiresIn = '24h';
     const token= jwt.sign({_id: this._id}, process.env.JWT_SECRET)
     return token;
+}
+userSchema.methods.comparePasswords = async function (password){
+    return await bcrypt.compare(password, this.password);
 }
 
 userSchema.statics.hashPassword= async function (password){
