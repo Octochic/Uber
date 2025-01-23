@@ -246,3 +246,86 @@ Bearer Token required in header or cookie.
   "message": "Unauthorized access"
 }
 ```
+### Example Success Response
+# Captain Routes
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "captain": {
+    "_id": "65b234c567890d1efg234567",
+    "fullname": {
+      "firstname": "James",
+      "lastname": "Smith"
+    },
+    "email": "james.smith@example.com",
+    "vehicle": {
+      "color": "Black",
+      "plate": "KA01AB1234",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "socketID": null,
+    "isAvailable": true,
+    "currentLocation": {
+      "type": "Point",
+      "coordinates": [0, 0]
+    }
+  }
+}
+```
+
+### Error Response Examples
+
+#### Validation Error (400)
+```json
+{
+  "errors": [
+    {
+      "msg": "Invalid vehicle type",
+      "param": "vehicle.vehicleType",
+      "location": "body"
+    },
+    {
+      "msg": "Vehicle capacity must be at least 1",
+      "param": "vehicle.capacity",
+      "location": "body"
+    }
+  ]
+}
+```
+
+#### Email Already Exists (409)
+```json
+{
+  "status": "error",
+  "message": "Email already registered"
+}
+```
+
+## Register Captain
+Register a new captain in the system.
+
+- **Route:** POST /api/captains/register
+- **Access:** Public
+- **Description:** Creates a new captain account
+
+### Request Body
+| Field | Type | Description | Validation |
+|-------|------|-------------|------------|
+| email | String | Captain's email address | Must be valid email format |
+| fullname.firstname | String | Captain's first name | Minimum 3 characters |
+| password | String | Account password | Minimum 6 characters |
+| vehicle.color | String | Vehicle color | Minimum 3 characters |
+| vehicle.plate | String | Vehicle plate number | Minimum 3 characters |
+| vehicle.capacity | Number | Vehicle passenger capacity | Minimum 1 |
+| vehicle.vehicleType | String | Type of vehicle | Must be 'car', 'motorcycle' or 'auto' |
+
+### Success Response
+- **Code:** 200
+- **Content:** Returns created captain object
+
+### Error Response
+- **Code:** 400
+- **Content:** Validation errors if any fields don't meet requirements
+
+### Sample Request
