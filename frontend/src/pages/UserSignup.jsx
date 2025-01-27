@@ -1,29 +1,74 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
+import axios from 'axios'
+import { UserDataContext } from '../context/UserContext'
 
 const UserSignup = () => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const [Firstname, setFirstname] = React.useState('')
-  const [Lastname, setLastname] = React.useState('')
-  const[userData, setUserData] = React.useState({})
+  const [firstname, setFirstname] = React.useState('')
+  const [lastname, setLastname] = React.useState('')
   
   
-  const submitHandler = (e) => {
-    e.preventDefault();
-    setUserData({
-      fullName:{
-      firstname: Firstname,
-      lastname: Lastname
+  const {user, setUser} = React.useContext(UserDataContext)
+  const navigate = useNavigate()
+  // const {setUser} = React.useContext(UserDataContext)
+  
+//   const submitHandler = async(e) => {
+//     e.preventDefault();
+//     const newUser = {
+//       fullname: {
+//         firstname: firstname,
+//         lastname: lastname
+//       },
+//       email: email,
+//       password: password
+//     }
+
+//     const response = await axios.post(`http://localhost:4000/users/register`, newUser)
+    
+//     if(response.data) {
+//       setUser({
+//         email: response.data.email,
+//         fullname: {
+//           firstname: response.data.fullname.firstname,
+//           lastname: response.data.fullname.lastname
+//         }
+//       })
+//       navigate('/home', { replace: true })  // Force navigation
+//     }
+// }
+  
+const submitHandler = async(e) => {
+  e.preventDefault();
+  try {
+    const newUser = {
+      fullname: {
+        firstname: firstname,
+        lastname: lastname
       },
       email: email,
-      password: password})
-      console.log(userData)
-    setEmail('')
-    setFirstname('')
-    setLastname('')
-    setPassword('')
+      password: password
+    };
+
+    
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
+    
+    if(response.status === 201) {
+      setUser({
+        email: response.data.user.email,
+        fullname: {
+          firstname: response.data.user.fullname.firstname,
+          lastname: response.data.user.fullname.lastname
+        }
+      });
+      localStorage.setItem('token', response.data.token)
+      navigate('/home');
+    }
+  } catch (error) {
+    console.error('Registration failed:', error);
   }
+}
   
   
   
@@ -32,14 +77,14 @@ const UserSignup = () => {
         <div >
         <img className='w-16 mb-10' src='https://www.pngplay.com/wp-content/uploads/8/Uber-Logo-Transparent-Background.png'></img>
         <form onSubmit={(e) => submitHandler(e)}>
-        <h3 className='text-lg font-medium mb-2'>What's your name?</h3>
+        <h3 className='text-base font-medium mb-2'>What's your name?</h3>
         <div className='flex gap-4 mb-5'>
         <input 
         required 
         className='bg-[#eeeeee] rounded px-4 py-2 w-1/2 text-lg placeholder:text-base'
         type="text" 
         placeholder="Firstname" 
-        value={Firstname}
+        value={firstname}
         onChange={(e) => {
           setFirstname(e.target.value)
         }}
@@ -49,7 +94,7 @@ const UserSignup = () => {
         className='bg-[#eeeeee] rounded px-4 py-2 w-1/2 text-lg placeholder:text-base'
         type="text" 
         placeholder="Lastname"
-        value={Lastname}
+        value={lastname}
         onChange={(e) => {
           setLastname(e.target.value)
         }} 
