@@ -1,20 +1,22 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-const WaitingForDriver = (props) => {
+
+const FinishRide = (props) => {
   return (
     <div>
     <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={()=>{
-    props.WaitingForDriver(false)
-  }}><i className=" text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
-
- <div className='flex items-center justify-between'>
-      <img className='h-15' src="https://img2.cgtrader.com/items/4127546/2c933281e5/large/mercedes-amg-coupe-3d-model-2c933281e5.jpg"/>
-  <div className='text-right'>
-    <h2 className='text-lg font-medium'>Sarthak</h2>
-    <h4 className='text-xl font-semibold'>MH 04 AD1234</h4>
-    <p className='text-sm text-gray-600'>Maruti Suzuki Alto</p>
+    props.setfinishRidePanel(false)
+  }}>
+  <i className=" text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
+  <h3 className='text-2xl font-semibold mb-5'> Finish this Ride</h3>
+  <div className='flex items-center justify-between p-4 border-2 mt-4 border-yellow-400 rounded-lg'>
+    <div className='flex items-center gap-3'>
+    <img  className='h-10 w-10 rounded-full object-cover' src="https://pcad.edu/wp-content/uploads/2023/09/Daniel-Cardona_400x500_acf_cropped.jpg" alt=""/>
+    <h2 className='text-lg font-medium'>Harsh Patel </h2>
+    </div>
+    <h5 className='text-lg font-semibold'>2.2 kM</h5>
   </div>
- </div>
   <div className='flex gap-2 justify-between flex-col items-center'>
   <div className='w-full mt-5'>
     <div className='flex items-center gap-5 p-3 border-gray-300 border-b-2'>
@@ -33,11 +35,16 @@ const WaitingForDriver = (props) => {
     <div>
         <h3 className='text-lg font-medium'>₹193.20</h3>
         <p className='text-sm -mt-1 text-gray-600'>Cash Cash</p>
-    </div></div>
+    </div>
+   </div>
   </div>
+ <div className='mt-6 w-full'>
+
+ <Link to='/captain-home'className='w-full flex justify-center mt-5 bg-green-600 text-white font-semibold text-lg p-2 rounded-lg'>Finish Ride</Link>
  </div>
+  </div>
 </div>
   )
 }
 
-export default WaitingForDriver
+export default FinishRide
