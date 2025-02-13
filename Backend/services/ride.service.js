@@ -50,6 +50,7 @@ async function getFare(pickup, destination) {
     return fares;
 }
 
+module.exports.getFare = getFare;
 
 
 
