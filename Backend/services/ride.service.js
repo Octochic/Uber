@@ -39,7 +39,7 @@ async function getFare(pickup, destination) {
         motorcycle: { base: 20, perKm: 10, perMin: 0.5 }
     };
 
-    const fares = {};
+    const fares= {};
     for (const vehicle in RATES) {
         const rate = RATES[vehicle];
         fares[vehicle] = rate.base + (distanceKm * rate.perKm) + (durationMin * rate.perMin);

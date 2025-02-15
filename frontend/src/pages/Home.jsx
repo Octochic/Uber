@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {useGSAP} from '@gsap/react'
 import { useRef } from 'react'
 import gsap from 'gsap'
+import axios from 'axios'
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from './components/LocationSearchPanel'
 import VehiclePanel from './components/VehiclePanel'
@@ -16,7 +17,7 @@ const Home = () => {
   const panelRef = useRef(null)
   const [panelOpen, setPanelOpen] = useState(false);
   const [activeInputType, setActiveInputType] = useState('pickup'); // Default value can be 'pickup'
-
+  const [fare, setFare] = useState({})
   const confirmedRidePanelRef= useRef(null)
   const vehiclePanelRef = useRef(null)
   const panelCloseRef = useRef(null)
@@ -98,10 +99,37 @@ useGSAP(function(){
     }
   },[waitingForDriver])
 
-  const findTrip = () => {
+  async function findTrip(){
     setvehiclePanel(true);
     setPanelOpen(false);
 
+    // const response= await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/get-fare`,{
+    //   params:{pickup, destination},
+    //   headers:{
+    //     Authorization: `Bearer ${localStorage.getItem}`
+    //   }
+    // })
+    // console.log(response.data)
+
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/get-fare`, {
+        params: { pickup, destination },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Fix localStorage retrieval
+        }
+      });
+  
+      console.log("API Response:", response.data);
+      
+      // Ensure response contains fare data
+      if (response.data) {
+        setFare(response.data); // Update fare state with fetched values
+      } else {
+        console.warn("No fare data received");
+      }
+    } catch (error) {
+      console.error("Error fetching fare data:", error);
+    }
   };
 
   
@@ -195,7 +223,8 @@ return(
           />
         </div>
       <div  ref={vehiclePanelRef} className='fixed w-full z-10 bg-white px-3 py-10 pt-12 bottom-0 translate-y-full'>
-           <VehiclePanel setConfirmedRidePanel={setConfirmedRidePanel} setvehiclePanel={setvehiclePanel} />
+           <VehiclePanel fare={fare} setConfirmedRidePanel={setConfirmedRidePanel} setvehiclePanel={setvehiclePanel} />
+           
       </div>
       <div  ref={confirmedRidePanelRef} className='fixed w-full z-10 bg-white px-3 py-6 pt-12 bottom-0 translate-y-full'>
            <ConfirmedRide setConfirmedRidePanel={setConfirmedRidePanel} setvehicleFound={setvehicleFound} />

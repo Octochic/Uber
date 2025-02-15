@@ -329,3 +329,38 @@ Register a new captain in the system.
 - **Content:** Validation errors if any fields don't meet requirements
 
 ### Sample Request
+## Get Fare Estimate
+Endpoint for calculating estimated fare for a ride.
+
+### Endpoint
+```
+GET /api/rides/get-fare
+```
+
+### Query Parameters
+| Parameter | Type   | Description                    |
+|-----------|--------|--------------------------------|
+| pickup    | object | Pickup location coordinates    |
+| dropoff   | object | Dropoff location coordinates   |
+| type      | string | Vehicle type (car/auto/bike)   |
+
+### Response Codes
+| Status | Description                                |
+|--------|--------------------------------------------|
+| 200    | Fare calculation successful                |
+| 400    | Bad request (invalid parameters)           |
+| 500    | Internal server error                      |
+
+### Example Request
+```
+GET /api/rides/get-fare?pickup[lat]=12.9716&pickup[lng]=77.5946&dropoff[lat]=13.0827&dropoff[lng]=77.5877&type=car
+```
+
+### Example Response
+```json
+{
+  "estimatedFare": 250,
+  "distance": "8.5 km",
+  "duration": "25 mins"
+}
+```

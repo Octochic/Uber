@@ -16,7 +16,7 @@ const VehiclePanel = (props) => {
             <h5 className='font-medium text-sm'> 2 mins away</h5>
             <p className='font-normal text-gray-600 text-xs'>Affordable, compact rides</p>
           </div>
-          <h2 className='text-xl font-semibold'>₹193.20</h2>
+          <h2 className='text-xl font-semibold'>₹{props.fare && props.fare.car ? Math.round(props.fare.car) : '--'}</h2>
         </div>
         <div onClick={()=>{
           props.setConfirmedRidePanel(true)
@@ -27,7 +27,8 @@ const VehiclePanel = (props) => {
             <h5 className='font-medium text-sm'> 2 mins away</h5>
             <p className='font-normal text-gray-600 text-xs'>Affordable, motorcycle rides</p>
           </div>
-          <h2 className='text-xl font-semibold'>₹65.12</h2>
+
+          <h2 className='text-xl font-semibold'>₹{props.fare && props.fare.motorcycle ? Math.round(props.fare.motorcycle) : '--'}</h2>
         </div>
         <div onClick={()=>{
           props.setConfirmedRidePanel(true)
@@ -39,7 +40,8 @@ const VehiclePanel = (props) => {
             <h5 className='font-medium text-sm'> 2 mins away</h5>
             <p className='font-normal text-gray-600 text-xs'>Affordable, motorcycle rides</p>
           </div>
-          <h2 className='text-xl font-semibold'>₹118.42</h2>
+          <h2 className='text-xl font-semibold'>₹{props.fare && props.fare.auto ? Math.round(props.fare.auto) : '--'}</h2>
+          {/* <h2 className='text-xl font-semibold'>₹{props.fare && props.fare.suv ? Math.round(props.fare.suv) : '--'}</h2> */}
         </div>  
     </div>
   )
